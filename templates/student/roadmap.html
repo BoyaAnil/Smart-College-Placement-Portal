@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Skill Gap Roadmap{% endblock %}
+
+{% block content %}
+  <div class="bg-white border border-slate-200 rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-2">Skill Gap Roadmap</h2>
+    <p class="text-slate-600 mb-4">Job: {{ job.title }} at {{ job.company }}</p>
+
+    {% if missing_skills %}
+      <p class="text-sm text-slate-600 mb-4">Missing skills: {{ missing_skills|join:", " }}</p>
+      <div class="space-y-4">
+        {% for item in roadmap_items %}
+          <div class="border border-slate-200 rounded-md p-4">
+            <h3 class="font-semibold mb-2">{{ item.skill }}</h3>
+            <ol class="list-decimal list-inside text-sm text-slate-600">
+              {% for step in item.steps %}
+                <li>{{ step }}</li>
+              {% endfor %}
+            </ol>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-slate-600">Great! You already match all required skills.</p>
+    {% endif %}
+  </div>
+{% endblock %}

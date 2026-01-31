@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+  <div class="grid lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 space-y-6">
+      <section class="bg-white border border-slate-200 rounded-lg p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold">AI Recommendations</h2>
+          <a href="{% url 'recommendations' %}" class="text-sm text-blue-600">View all</a>
+        </div>
+        {% if recommendations %}
+          <div class="space-y-4">
+            {% for item in recommendations %}
+              <div class="border border-slate-200 rounded-md p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h3 class="font-semibold">{{ item.job.title }}</h3>
+                    <p class="text-sm text-slate-600">{{ item.job.company }} - {{ item.job.location }}</p>
+                  </div>
+                  <span class="text-sm font-semibold text-emerald-600">{{ item.score }}%</span>
+                </div>
+                <ul class="text-sm text-slate-600 mt-2 list-disc list-inside">
+                  {% for reason in item.reasons %}
+                    <li>{{ reason }}</li>
+                  {% endfor %}
+                </ul>
+                <a href="{% url 'student_job_detail' item.job.id %}" class="text-blue-600 text-sm mt-2 inline-block">View job</a>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-slate-600">No recommendations yet. Update your profile to get better matches.</p>
+        {% endif %}
+      </section>
+
+      <section class="bg-white border border-slate-200 rounded-lg p-6">
+        <h2 class="text-lg font-semibold mb-4">Your Applications</h2>
+        {% if applications %}
+          <div class="space-y-3">
+            {% for application in applications %}
+              <div class="flex items-center justify-between border border-slate-200 rounded-md p-4">
+                <div>
+                  <h3 class="font-semibold">{{ application.job.title }}</h3>
+                  <p class="text-sm text-slate-600">{{ application.job.company }}</p>
+                </div>
+                <span class="text-xs bg-slate-100 px-3 py-1 rounded-full">{{ application.status }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-slate-600">You have not applied to any jobs yet.</p>
+        {% endif %}
+      </section>
+    </div>
+
+    <aside class="bg-white border border-slate-200 rounded-lg p-6 h-fit">
+      <h2 class="text-lg font-semibold mb-4">Profile Snapshot</h2>
+      <p class="text-sm text-slate-600 mb-2"><strong>Branch:</strong> {{ profile.branch|default:"-" }}</p>
+      <p class="text-sm text-slate-600 mb-2"><strong>Year:</strong> {{ profile.year|default:"-" }}</p>
+      <p class="text-sm text-slate-600 mb-2"><strong>CGPA:</strong> {{ profile.cgpa|default:"-" }}</p>
+      <p class="text-sm text-slate-600 mb-2"><strong>Skills:</strong> {{ profile.skills|default:"-" }}</p>
+      <p class="text-sm text-slate-600 mb-4"><strong>Interests:</strong> {{ profile.interests|default:"-" }}</p>
+      <a href="{% url 'student_profile' %}" class="text-blue-600 text-sm">Edit profile</a>
+    </aside>
+  </div>
+{% endblock %}

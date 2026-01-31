@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Applicants{% endblock %}
+
+{% block content %}
+  <div class="bg-white border border-slate-200 rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-2">Applicants for {{ job.title }}</h2>
+    <p class="text-slate-600 mb-4">{{ job.company }} - {{ job.location }}</p>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="text-left border-b">
+            <th class="py-2">Student</th>
+            <th class="py-2">Branch</th>
+            <th class="py-2">CGPA</th>
+            <th class="py-2">Status</th>
+            <th class="py-2">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for application in applicants %}
+            <tr class="border-b">
+              <td class="py-2">{{ application.student.get_full_name|default:application.student.username }}</td>
+              <td class="py-2">{{ application.student.profile.branch|default:"-" }}</td>
+              <td class="py-2">{{ application.student.profile.cgpa|default:"-" }}</td>
+              <td class="py-2">{{ application.status }}</td>
+              <td class="py-2">
+                <form method="post" class="flex gap-2 items-center">
+                  {% csrf_token %}
+                  <input type="hidden" name="application_id" value="{{ application.id }}" />
+                  <select name="status" class="border border-slate-200 rounded-md px-2 py-1">
+                    {% for value, label in status_choices %}
+                      <option value="{{ value }}" {% if application.status == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                  </select>
+                  <button class="text-blue-600 text-sm">Update</button>
+                </form>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" class="py-4 text-slate-600">No applicants yet.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

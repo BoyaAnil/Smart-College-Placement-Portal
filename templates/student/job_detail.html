@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Job Details{% endblock %}
+
+{% block content %}
+  <div class="bg-white border border-slate-200 rounded-lg p-6">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+      <div>
+        <h2 class="text-2xl font-semibold">{{ job.title }}</h2>
+        <p class="text-slate-600">{{ job.company }} - {{ job.location }}</p>
+      </div>
+      <div class="mt-4 md:mt-0">
+        {% if applied %}
+          <span class="text-sm bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full">Applied</span>
+        {% else %}
+          <a href="{% url 'apply_job' job.id %}" class="bg-blue-600 text-white px-4 py-2 rounded-md">Apply</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="mt-6 space-y-3 text-sm text-slate-700">
+      <p><strong>Description:</strong> {{ job.description }}</p>
+      <p><strong>Required Skills:</strong> {{ job.required_skills }}</p>
+      <p><strong>Eligible Branches:</strong> {{ job.eligible_branches }}</p>
+      <p><strong>Minimum CGPA:</strong> {{ job.min_cgpa }}</p>
+      <p><strong>Job Type:</strong> {{ job.job_type }}</p>
+      <p><strong>Salary Range:</strong> {{ job.salary_min }} - {{ job.salary_max }}</p>
+      <p><strong>Last Date:</strong> {{ job.last_date }}</p>
+    </div>
+
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href="{% url 'roadmap' job.id %}" class="border border-blue-600 text-blue-600 px-4 py-2 rounded-md">Skill Gap Roadmap</a>
+      <a href="{% url 'resume_bullets' job.id %}" class="border border-slate-600 text-slate-700 px-4 py-2 rounded-md">Resume Bullets</a>
+    </div>
+  </div>
+{% endblock %}

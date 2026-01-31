@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Smart College Placement Portal{% endblock %}
+
+{% block content %}
+  <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-8">
+    <div class="grid md:grid-cols-2 gap-6 items-center">
+      <div>
+        <h1 class="text-3xl font-bold text-slate-900 mb-3">Smart College Placement Portal</h1>
+        <p class="text-slate-600 mb-6">
+          AI-assisted job recommendations, skill-gap roadmaps, and resume bullet suggestions
+          for final-year students. Recruiters can post jobs, review applicants, and track analytics.
+        </p>
+        <div class="flex gap-3">
+          <a href="{% url 'register' %}" class="bg-blue-600 text-white px-5 py-2 rounded-md">Get Started</a>
+          <a href="{% url 'login' %}" class="border border-blue-600 text-blue-600 px-5 py-2 rounded-md">Login</a>
+        </div>
+      </div>
+      <div class="bg-slate-50 border border-slate-200 rounded-lg p-6">
+        <h2 class="text-lg font-semibold mb-3">Platform Stats</h2>
+        <div class="grid grid-cols-2 gap-4 text-center">
+          <div class="bg-white border rounded-md p-4">
+            <p class="text-2xl font-bold">{{ stats.jobs }}</p>
+            <p class="text-xs text-slate-500">Jobs Posted</p>
+          </div>
+          <div class="bg-white border rounded-md p-4">
+            <p class="text-2xl font-bold">{{ stats.applications }}</p>
+            <p class="text-xs text-slate-500">Applications</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="text-xl font-semibold mb-4">Latest Job Opportunities</h2>
+    <div class="grid md:grid-cols-3 gap-4">
+      {% for job in latest_jobs %}
+        <div class="bg-white border border-slate-200 rounded-lg p-4">
+          <h3 class="font-semibold">{{ job.title }}</h3>
+          <p class="text-sm text-slate-600">{{ job.company }} - {{ job.location }}</p>
+          <p class="text-xs text-slate-500 mt-2">Min CGPA: {{ job.min_cgpa }}</p>
+          <a href="{% url 'student_job_detail' job.id %}" class="text-blue-600 text-sm mt-3 inline-block">View details</a>
+        </div>
+      {% empty %}
+        <p class="text-slate-500">No jobs posted yet.</p>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

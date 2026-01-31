@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Recommendations{% endblock %}
+
+{% block content %}
+  <h2 class="text-xl font-semibold mb-4">Recommended Jobs</h2>
+  <div class="space-y-4">
+    {% for item in recommendations %}
+      <div class="bg-white border border-slate-200 rounded-lg p-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-semibold">{{ item.job.title }}</h3>
+            <p class="text-sm text-slate-600">{{ item.job.company }} - {{ item.job.location }}</p>
+          </div>
+          <span class="text-sm font-semibold text-emerald-600">{{ item.score }}%</span>
+        </div>
+        <ul class="text-sm text-slate-600 mt-3 list-disc list-inside">
+          {% for reason in item.reasons %}
+            <li>{{ reason }}</li>
+          {% endfor %}
+        </ul>
+        <a href="{% url 'student_job_detail' item.job.id %}" class="text-blue-600 text-sm mt-3 inline-block">View job</a>
+      </div>
+    {% empty %}
+      <p class="text-slate-600">No recommendations yet.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

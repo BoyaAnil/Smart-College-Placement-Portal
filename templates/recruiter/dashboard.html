@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Recruiter Dashboard{% endblock %}
+
+{% block content %}
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h2 class="text-xl font-semibold">Recruiter Dashboard</h2>
+      <p class="text-sm text-slate-600">Total applications: {{ application_count }}</p>
+    </div>
+    <a href="{% url 'job_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md">Post New Job</a>
+  </div>
+
+  <div class="space-y-4">
+    {% for job in jobs %}
+      <div class="bg-white border border-slate-200 rounded-lg p-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-semibold">{{ job.title }}</h3>
+            <p class="text-sm text-slate-600">{{ job.company }} - {{ job.location }}</p>
+          </div>
+          <div class="flex gap-3 text-sm">
+            <a href="{% url 'job_edit' job.id %}" class="text-blue-600">Edit</a>
+            <a href="{% url 'job_delete' job.id %}" class="text-red-500">Delete</a>
+            <a href="{% url 'job_applicants' job.id %}" class="text-slate-700">Applicants</a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-slate-600">No jobs posted yet.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

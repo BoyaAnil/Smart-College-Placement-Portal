@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{% if is_edit %}Edit Job{% else %}Post Job{% endif %}{% endblock %}
+
+{% block content %}
+  <div class="max-w-3xl mx-auto bg-white border border-slate-200 rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-4">{% if is_edit %}Edit Job{% else %}Post a New Job{% endif %}</h2>
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      {% for field in form %}
+        <div>
+          <label class="block text-sm font-medium mb-1">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <p class="text-sm text-red-600">{{ field.errors|striptags }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded-md">
+        {% if is_edit %}Update Job{% else %}Create Job{% endif %}
+      </button>
+    </form>
+  </div>
+{% endblock %}
