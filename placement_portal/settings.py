@@ -9,6 +9,7 @@ SECRET_KEY = "django-insecure-change-me-in-production"
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://*.vercel.app"]
 
 
 INSTALLED_APPS = [
